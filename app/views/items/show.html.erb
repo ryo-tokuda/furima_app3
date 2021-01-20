@@ -29,9 +29,8 @@
 <%#②ログインしている かつ 出品者：編集削除のボタンが表示される%>   
 <%#③ログインしている かつ 出品者以外：購入のボタンが表示される%>  
 
-<% if user_signed_in?%>
-<% if current_user == @item.user%>
-    <%= link_to "商品の編集", "#", method: :get, class: "item-red-btn" %>
+<% if user_signed_in? && current_user.id == @item.user_id%>
+    <%= link_to "商品の編集", edit_item_path(@item.id), method: :get, class: "item-red-btn" %>
     <p class="or-text">or</p>
     <%= link_to "削除", "#", method: :delete, class:"item-destroy" %>
 <% else %>
@@ -39,7 +38,7 @@
     <%= link_to "購入画面に進む", "#" ,class:"item-red-btn"%>
     <%# //商品が売れていない場合はこちらを表示しましょう %>
 <% end %>
-<% end %>
+
     <%# //ログインしているユーザーと出品しているユーザーが、同一人物の場合と同一人物ではない場合で、処理を分けましょう %>
 
     <div class="item-explain-box">
