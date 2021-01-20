@@ -1,12 +1,15 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, only: [:new,:create,:edit,:update]
-  before_action :set_item, only: [:show,:edit,:update]
-  before_action :move_to_index, only:[:edit,:update]
-
+  before_action :authenticate_user!, only: [:new,:create,:edit,:update,:destroy]
+  # deviseのヘルパーメソッド。ログインしていなければ、ログイン画面へ遷移させる。
+  before_action :set_item, only: [:show,:edit,:update,:destroy]
+  # リファクタリング① すでに保存されたデータを取り出す記述
+  before_action :move_to_index, only:[:edit,:update,:destroy]
+# リファクタリング② ログインしているユーザーと@itemのユーザーの一致確認
+#                 異なる場合は、トップページへ遷移させる
 
   def index
     @items = Item.includes(:user).order("created_at DESC")
-  
+  # 一覧機能 出品された順番に表示を行うため、.order以降の記述を追加
   end
   
   def new
@@ -41,7 +44,13 @@ class ItemsController < ApplicationController
       redirect_to item_path(@item)
     else
       render 'edit'
+        # バリデーションで問題があれば、保存はされず「商品編集画面」を再描画
     end
+  end
+
+  def destroy
+    @item.destroy
+    redirect_to root_path
   end
 
 
@@ -64,9 +73,13 @@ class ItemsController < ApplicationController
 
   def set_item
     @item = Item.find(params[:id])
+    # リファクタリング① すでに保存されたデータを取り出す記述
   end
+
   def move_to_index
     return redirect_to root_path if current_user.id != @item.user.id
+      # リファクタリング② ログインしているユーザーと@itemのユーザーの一致確認
+      #                 異なる場合は、トップページへ遷移させる
   end
 end
 
