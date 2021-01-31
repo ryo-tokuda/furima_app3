@@ -5,7 +5,8 @@ class User < ApplicationRecord
           :recoverable, :rememberable, :validatable
 
     # アソシエーション設定
-    has_many :item
+    has_many :items
+    has_many :orders
 
     # <<バリデーション>>
     with_options presence: true do

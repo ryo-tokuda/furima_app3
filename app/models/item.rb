@@ -2,6 +2,8 @@ class Item < ApplicationRecord
 
   # アソシエーション設定
   belongs_to :user
+  has_one :order
+  # has_one :address,dependent: :destroy
   has_one_attached :image
 
   # Active_hashとのアソシエーション

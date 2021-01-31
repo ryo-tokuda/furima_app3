@@ -8,7 +8,7 @@ class ItemsController < ApplicationController
 #                 異なる場合は、トップページへ遷移させる
 
   def index
-    @items = Item.includes(:user).order("created_at DESC")
+    @items = Item.includes(:user,:order).order("created_at DESC")
   # 一覧機能 出品された順番に表示を行うため、.order以降の記述を追加
   end
   
@@ -20,6 +20,7 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     # バリデーションで問題があれば、保存はされず「商品出品画面」を再描画
+    # binding.pry
     if @item.valid?
       @item.save
       return redirect_to root_path
@@ -49,8 +50,8 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    @item.destroy
-    redirect_to root_path
+    @item.destroy 
+    redirect_to root_path, notice: '商品を削除しました'
   end
 
 
