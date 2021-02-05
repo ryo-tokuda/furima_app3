@@ -30,7 +30,7 @@
 <%# ①ログインしていない：ボタンは何も表示されない %>
 <%#②ログインしている かつ 出品者：編集削除のボタンが表示される%>   
 <%#③ログインしている かつ 出品者以外：購入のボタンが表示される%>  
-<% if user_signed_in? && @item.order == nil %>
+<% if user_signed_in? && @item.order == nil %> 
 <% if user_signed_in? && current_user.id == @item.user_id%>
     <%= link_to "商品の編集", edit_item_path(@item.id), method: :get, class: "item-red-btn" %>
     <p class="or-text">or</p>
